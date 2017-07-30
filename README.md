@@ -15,8 +15,7 @@ Since selenium is going to open actual browser windows, you need to run
 everything inside a graphical environment.
 
 ### geckodriver
-Since Selenium needs the latest geckodriver, you'll have to install that by
-yourself.
+Selenium needs the latest geckodriver, so you'll have to install that too.
 ```
 wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux64.tar.gz
 tar -xvzf geckodriver-v0.18.0-linux64.tar.gz
@@ -26,14 +25,14 @@ sudo mv geckodriver /usr/local/bin/
 ```
 
 ### venv
-Since there is a Python module to install (selenium), it's recommended to do
-that inside a Virtualenv.
+Because there is a Python module to install (selenium), it's recommended to set
+up a Virtualenv for that.
 ```
 sudo pip install Virtualenv
 ```
 Then, inside the project directory do
 ```
-virtualenv venv
+virtualenv venv         # Create venv
 . venv/bin/activate     # Activate venv
 pip install selenium
 deactivate              # Deactivate venv
@@ -50,4 +49,8 @@ With the activated Virtualenv and inside the project directory, run
 ```
 python control.py -p <password> -a 1
 ```
-to turn WiFi on and run it with `-a 0` to turn it off.
+to turn WiFi on and
+```
+python control.py -p <password> -a 0
+```
+to turn it off.
