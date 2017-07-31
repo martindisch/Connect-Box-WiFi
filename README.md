@@ -1,15 +1,20 @@
 # Connect Box WiFi
 Web application that lets you turn the WiFi of your Connect Box on/off.
 
+This was developed and tested on a Raspberry Pi, so if you are working on
+different platforms, some installation steps may differ as well. Certainly
+the executable that you need to download in the geckodriver section is going
+to be the one for your computer's CPU architecture instead of the ARM one.
+
 Currently only the underlying script is done (so no web application really),
 but the plan is to implement a nice on/off switch using Flask.
 
 ## Installation
 ### Firefox
-We're going to use Firefox as a browser, although you could easily rewrite
-the script for whichever one you like best or already have installed.
+We're going to use Firefox as a browser, because the Chrome webdriver is
+not available for ARM anymore.
 ```
-sudo apt-get install firefox-esr
+sudo apt-get install iceweasel
 ```
 Since selenium is going to open actual browser windows, you need to run
 everything inside a graphical environment.
@@ -17,8 +22,8 @@ everything inside a graphical environment.
 ### geckodriver
 Selenium needs the latest geckodriver, so you'll have to install that too.
 ```
-wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux64.tar.gz
-tar -xvzf geckodriver-v0.18.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-arm7hf.tar.gz
+tar -xvzf geckodriver-v0.18.0-arm7hf.tar.gz
 rm geckodriver-v0.18.0-linux64.tar.gz
 chmod +x geckodriver
 sudo mv geckodriver /usr/local/bin/

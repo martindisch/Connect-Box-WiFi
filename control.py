@@ -12,8 +12,10 @@ def control(password, action=0):
     action : int, optional
         Whether to turn WiFi on (1) or off (0)
     """
+    caps = webdriver.DesiredCapabilities().FIREFOX
+    caps["marionette"] = False
     # Instantiate browser and visit login page
-    browser = webdriver.Firefox()
+    browser = webdriver.Firefox(capabilities=caps)
     browser.get('http://192.168.0.1/common_page/login.html')
     time.sleep(5)
 
