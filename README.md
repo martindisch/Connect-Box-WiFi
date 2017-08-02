@@ -29,7 +29,17 @@ chmod +x geckodriver
 sudo mv geckodriver /usr/local/bin/
 ```
 
-### venv
+### Xvfb
+Because you may want to run this on a Raspberry Pi you don't always have a
+display attached to, we need this package together with PyVirtualDisplay to
+make it run.
+```
+sudo apt-get install xvfb
+```
+PyVirtualDisplay is going to be automatically installed by setup.py in the next
+step.
+
+### venv/Python dependencies
 Because there is a Python module to install (selenium), it's recommended to set
 up a Virtualenv for that.
 ```
@@ -39,7 +49,7 @@ Then, inside the project directory do
 ```
 virtualenv venv         # Create venv
 . venv/bin/activate     # Activate venv
-pip install selenium
+pip install -e .        # Install dependencies from setup.py
 deactivate              # Deactivate venv
 ```
 Remember: every time you want to run the script, start the Virtualenv with
