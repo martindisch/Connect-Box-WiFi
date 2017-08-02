@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WiFi on/off</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('main.static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    </head>
+    <body>
+        <div class="mdl-card mdl-shadow--4dp cb-inputcard">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text ">WiFi options</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                It can take up to a minute for the change to take effect.
+                <form action="/" method="POST">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" type="submit">
+                    Turn on
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored cb-right" type="submit">
+                    Turn off
+                    </button>
+                </form>
+            </div>
+        </div>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </body>
+</html>

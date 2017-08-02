@@ -1,0 +1,15 @@
+body {
+    padding: 2em;
+}
+
+.cb-inputcard {
+    margin: auto;
+}
+
+.cb-right {
+    float: right;
+}
+
+form {
+    margin-top: 2em;
+}

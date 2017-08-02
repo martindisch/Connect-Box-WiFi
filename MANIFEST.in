@@ -1,0 +1,4 @@
+graft connectboxcontrol/main/templates
+graft connectboxcontrol/main/static
+graft connectboxcontrol/config/templates
+graft connectboxcontrol/config/static
