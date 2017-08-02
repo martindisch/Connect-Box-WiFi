@@ -14,17 +14,20 @@ def control(password, action=0):
         Whether to turn WiFi on (1) or off (0)
     """
     # Prepare Xvfb display
+    print("Preparing display")
     display = Display(visible=0, size=(800, 600))
     display.start()
     # Set up capabilities to make it run with Firefox ESR
     caps = webdriver.DesiredCapabilities().FIREFOX
     caps["marionette"] = False
     # Instantiate browser and visit login page
+    print("Starting browser")
     browser = webdriver.Firefox(capabilities=caps)
     browser.get('http://192.168.0.1/common_page/login.html')
     time.sleep(5)
 
     # Fill out login form and submit
+    print("Logging in")
     loginPassword = browser.find_element_by_id('loginPassword')
     loginPassword.send_keys(password)
     continueButton = browser.find_element_by_id('c_42')
@@ -32,6 +35,7 @@ def control(password, action=0):
     time.sleep(5)
 
     # Find the WiFi settings and load the page
+    print("Opening WiFi settings")
     advancedSettings = browser.find_element_by_id('c_mu05')
     advancedSettings.click()
     wifiSettings = browser.find_element_by_id('c_mu06')
@@ -42,9 +46,11 @@ def control(password, action=0):
 
     # Select 2.4 GHz on/off checkbox and apply settings
     if action == 1:
+        print("Turning WiFi on")
         on24 = browser.find_element_by_id('iwlanRadio2G1')
         on24.click()
     elif action == 0:
+        print("Turning WiFi off")
         off24 = browser.find_element_by_id('iwlanRadio2G2')
         off24.click()
     applyButton = browser.find_element_by_id('c_02')
@@ -52,11 +58,13 @@ def control(password, action=0):
     time.sleep(5)
 
     # Logout
+    print("Logging out")
     logout = browser.find_element_by_id('c_mu30')
     logout.click()
     time.sleep(5)
 
     # Close browser instance
+    print("Terminating browser")
     browser.quit()
 
 if __name__ == "__main__":
