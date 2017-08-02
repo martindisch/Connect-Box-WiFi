@@ -7,7 +7,7 @@ config_blueprint = Blueprint('config', __name__, static_folder='static',
                              template_folder='templates')
 
 @config_blueprint.route('/config', methods=['GET'])
-def main_get():
+def config_get():
     """Show the configuration page for the password."""
     if os.path.isfile('config.json'):
         with open('config.json', 'r') as f:
@@ -17,7 +17,7 @@ def main_get():
     return render_template('config.html')
     
 @config_blueprint.route('/config', methods=['POST'])
-def main_post():
+def config_post():
     """Save the given password and show the configuration page."""
     password = request.form['password']
     with open('config.json', 'w') as f:
