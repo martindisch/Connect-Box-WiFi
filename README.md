@@ -14,7 +14,7 @@ but the plan is to implement a nice on/off switch using Flask.
 We're going to use Firefox as a browser, because the Chrome webdriver is
 not available for ARM anymore.
 ```
-sudo apt-get install iceweasel
+sudo apt-get install firefox-esr
 ```
 Since selenium is going to open actual browser windows, you need to run
 everything inside a graphical environment.
