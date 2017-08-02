@@ -2,8 +2,8 @@ body {
     padding: 2em;
 }
 
-.cb-inputcard {
-    margin: auto;
+.cb-inputcard, .cb-errorcard {
+    margin: auto auto 2em auto;
 }
 
 .cb-right {
