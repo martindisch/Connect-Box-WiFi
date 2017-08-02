@@ -1,5 +1,6 @@
 import argparse
 from selenium import webdriver
+from pyvirtualdisplay import Display
 import time
 
 def control(password, action=0):
@@ -12,6 +13,10 @@ def control(password, action=0):
     action : int, optional
         Whether to turn WiFi on (1) or off (0)
     """
+    # Prepare Xvfb display
+    display = Display(visible=0, size=(800, 600))
+    display.start()
+    # Set up capabilities to make it run with Firefox ESR
     caps = webdriver.DesiredCapabilities().FIREFOX
     caps["marionette"] = False
     # Instantiate browser and visit login page
