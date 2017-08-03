@@ -40,7 +40,7 @@ step.
 Because there is a Python module to install (selenium), it's recommended to set
 up a Virtualenv for that.
 ```
-sudo pip install Virtualenv
+sudo pip install virtualenv
 ```
 Then, inside the project directory do
 ```
@@ -48,6 +48,7 @@ virtualenv -p python3 venv  # Create venv
 . venv/bin/activate         # Activate venv
 pip install -e .            # Install dependencies from setup.py
 deactivate                  # Deactivate venv
+```
 
 ## Usage
 ### Development server (easy)
