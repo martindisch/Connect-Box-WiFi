@@ -6,9 +6,6 @@ different platforms, some installation steps may differ as well. Certainly
 the executable that you need to download in the geckodriver section is going
 to be the one for your computer's CPU architecture instead of the ARM one.
 
-Currently only the underlying script is done (so no web application really),
-but the plan is to implement a nice on/off switch using Flask.
-
 ## Installation
 ### Firefox
 We're going to use Firefox as a browser, because the Chrome webdriver is
@@ -47,25 +44,25 @@ sudo pip install Virtualenv
 ```
 Then, inside the project directory do
 ```
-virtualenv venv         # Create venv
-. venv/bin/activate     # Activate venv
-pip install -e .        # Install dependencies from setup.py
-deactivate              # Deactivate venv
-```
-Remember: every time you want to run the script, start the Virtualenv with
-```
-. venv/bin/activate
-```
-and to deactivate it once you're done, just type
-`deactivate`.
+virtualenv -p python3 venv  # Create venv
+. venv/bin/activate         # Activate venv
+pip install -e .            # Install dependencies from setup.py
+deactivate                  # Deactivate venv
 
 ## Usage
-With the activated Virtualenv and inside the project directory, run
+### Development server (easy)
+Flask has a built-in development server. While very convenient, it's generally
+not recommended to run your app with this method in production. For one, even
+with debug mode disabled, it's not the most performant or secure way of running
+your app. Another problem is that if you want it to run on port 80, you'll have
+to `sudo` the application and giving your potentially insecure webserver that
+privilege can be dangerous.
+But since you're going to be running the system inside your (hopefully)
+protected LAN, this might be acceptable in just this special case.
+If you think so, all you need to do is run the start script.
 ```
-python control.py -p <password> -a 1
+sudo ./start80.sh
 ```
-to turn WiFi on and
-```
-python control.py -p <password> -a 0
-```
-to turn it off.
+With that, the main on/off interface can be reached by typing in the IP of your
+Pi in the browser, and the configuration interface to enter the router
+password is located at <IP>/config.
