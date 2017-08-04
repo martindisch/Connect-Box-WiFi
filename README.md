@@ -51,7 +51,7 @@ deactivate                  # Deactivate venv
 ```
 
 ## Usage
-### Development server (easy)
+### Development server (simple)
 Flask has a built-in development server. While very convenient, it's generally
 not recommended to run your app with this method in production. For one, even
 with debug mode disabled, it's not the most performant or secure way of running
@@ -65,5 +65,35 @@ If you think so, all you need to do is run the start script.
 sudo ./start80.sh
 ```
 With that, the main on/off interface can be reached by typing in the IP of your
-Pi in the browser, and the configuration interface to enter the router
+device in the browser, and the configuration interface to enter the router
 password is located at <IP>/config.
+
+### Gunicorn & Nginx (less simple but better)
+First, you're going to want to make sure to have Nginx installed.
+```
+sudo apt-get install nginx
+```
+No need to worry about Gunicorn, as it's a dependency that was already
+installed with setup.py. Next, you may want to create a systemd service that
+starts the Gunicorn instance at boot. There is already a service file
+prepared, called `connectboxcontrol.service`. Check it out, as you may need
+to change the username or the path where your project is located. After that,
+you're ready to copy the file to the systemd directory and enable the service.
+```
+sudo cp connectboxcontrol.service /etc/systemd/system/
+sudo systemctl start connectboxcontrol
+sudo systemctl enable connectboxcontrol
+```
+Next, we'll set up Nginx. As before, the file `nginx_config` is all you need.
+Open it and add the IP of your device at the appropriate location. Then you
+can copy the file to where it needs to be, create a symlink for Nginx, test
+for syntax errors and restart the Nginx service.
+```
+sudo cp nginx_config /etc/nginx/sites-available/connectboxcontrol
+sudo ln -s /etc/nginx/sites-available/connectboxcontrol /etc/nginx/sites-enabled
+sudo nginx -t
+sudo systemctl restart nginx
+```
+And that's it. You should now be able to find the main page by typing in the
+IP of your device in the browser, and the configuration interface to enter the
+router password is located at <IP>/config.
