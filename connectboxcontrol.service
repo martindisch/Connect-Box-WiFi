@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve connectboxcontrol
+After=network.target
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/home/pi/Connect-Box-WiFi
+Environment="PATH=/home/pi/Connect-Box-WiFi/venv/bin"
+ExecStart=/home/pi/Connect-Box-WiFi/venv/bin/gunicorn --workers 3 --bind unix:connectboxcontrol.sock -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target

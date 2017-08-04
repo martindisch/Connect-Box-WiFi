@@ -6,5 +6,5 @@ setup(
     description="Turn the WiFi of your Connect Box router on/off",
     packages=['connectboxcontrol'],
     include_package_data=True,
-    install_requires=['selenium', 'flask', 'pyvirtualdisplay']
+    install_requires=['selenium', 'flask', 'pyvirtualdisplay', 'gunicorn']
 )

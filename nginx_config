@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    server_name YOUR_IP_HERE;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/pi/Connect-Box-WiFi/connectboxcontrol.sock;
+    }
+}
