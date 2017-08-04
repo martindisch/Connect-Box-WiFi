@@ -1,10 +1,8 @@
 # Connect Box WiFi
-Web application that lets you turn the WiFi of your Connect Box on/off.
+A Flask web application that lets you turn the WiFi of your Connect Box on/off.
 
 This was developed and tested on a Raspberry Pi, so if you are working on
-different platforms, some installation steps may differ as well. Certainly
-the executable that you need to download in the geckodriver section is going
-to be the one for your computer's CPU architecture instead of the ARM one.
+different platforms, some installation steps may differ as well.
 
 ## Installation
 ### Firefox
@@ -13,8 +11,6 @@ not available for ARM anymore.
 ```
 sudo apt-get install firefox-esr
 ```
-Since selenium is going to open actual browser windows, you need to run
-everything inside a graphical environment.
 
 ### geckodriver
 Selenium needs the latest geckodriver, so you'll have to install that too.
@@ -25,6 +21,8 @@ rm geckodriver-v0.18.0-linux64.tar.gz
 chmod +x geckodriver
 sudo mv geckodriver /usr/local/bin/
 ```
+Note that the link provided here is for the ARM executable, if you are on a
+different CPU architecture, change accordingly.
 
 ### Xvfb
 Because you may want to run this on a Raspberry Pi you don't always have a
@@ -34,10 +32,13 @@ make it run.
 sudo apt-get install xvfb
 ```
 PyVirtualDisplay is going to be automatically installed by setup.py in the next
-step.
+step. With this setup there aren't any actual windows being opened, but still
+you'll probably run into problems on a machine without a graphical desktop
+environment, such as Raspbian Lite. The safest way is to just run on a system
+with a full desktop installed, so all dependencies are satisfied for sure.
 
 ### venv/Python dependencies
-Because there is a Python module to install (selenium), it's recommended to set
+Because there are some Python modules to install, it's recommended to set
 up a Virtualenv for that.
 ```
 sudo pip install virtualenv
@@ -66,7 +67,7 @@ sudo ./start80.sh
 ```
 With that, the main on/off interface can be reached by typing in the IP of your
 device in the browser, and the configuration interface to enter the router
-password is located at <IP>/config.
+password is located at IP/config.
 
 ### Gunicorn & Nginx (less simple but better)
 First, you're going to want to make sure to have Nginx installed.
@@ -96,4 +97,4 @@ sudo systemctl restart nginx
 ```
 And that's it. You should now be able to find the main page by typing in the
 IP of your device in the browser, and the configuration interface to enter the
-router password is located at <IP>/config.
+router password is located at IP/config.
