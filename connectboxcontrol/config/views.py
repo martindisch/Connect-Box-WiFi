@@ -18,6 +18,6 @@ def config_post():
     with open('config.json', 'w') as f:
         json.dump({'password': password}, f)
     title = "Success"
-    message = "The password has been saved"
+    message = "The password has been saved."
     return render_template('success.html',
                            password=password, message=message, title=title)
