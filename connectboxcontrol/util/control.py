@@ -66,6 +66,10 @@ def control(password, action=0):
     # Close browser instance
     print("Terminating browser")
     browser.quit()
+    
+    # Stop virtual display
+    print("Stopping display")
+    display.stop()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Turn WiFi on/off.")
