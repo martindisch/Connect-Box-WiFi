@@ -67,7 +67,7 @@ sudo ./start80.sh
 ```
 With that, the main on/off interface can be reached by typing in the IP of your
 device in the browser, and the configuration interface to enter the router
-password is located at IP/config.
+password is located at IP/config. Don't forget to set it up.
 
 ### Gunicorn & Nginx (less simple but better)
 First, you're going to want to make sure to have Nginx installed.
@@ -82,8 +82,9 @@ to change the username or the path where your project is located. After that,
 you're ready to copy the file to the systemd directory and enable the service.
 ```
 sudo cp connectboxcontrol.service /etc/systemd/system/
-sudo systemctl start connectboxcontrol
-sudo systemctl enable connectboxcontrol
+sudo systemctl daemon-reload
+sudo systemctl start connectboxcontrol.service
+sudo systemctl enable connectboxcontrol.service
 ```
 Next, we'll set up Nginx. As before, the file `nginx_config` is all you need.
 Open it and add the IP of your device at the appropriate location. Then you
@@ -91,10 +92,10 @@ can copy the file to where it needs to be, create a symlink for Nginx, test
 for syntax errors and restart the Nginx service.
 ```
 sudo cp nginx_config /etc/nginx/sites-available/connectboxcontrol
-sudo ln -s /etc/nginx/sites-available/connectboxcontrol /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/connectboxcontrol /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
 And that's it. You should now be able to find the main page by typing in the
 IP of your device in the browser, and the configuration interface to enter the
-router password is located at IP/config.
+router password is located at IP/config. Don't forget to set it up.
