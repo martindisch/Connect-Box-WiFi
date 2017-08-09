@@ -69,7 +69,7 @@ def control(password, action=0):
     
     # Stop virtual display
     print("Stopping display")
-    display.stop()
+    display.popen.terminate()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Turn WiFi on/off.")
