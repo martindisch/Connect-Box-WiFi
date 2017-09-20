@@ -99,3 +99,10 @@ sudo systemctl restart nginx
 And that's it. You should now be able to find the main page by typing in the
 IP of your device in the browser, and the configuration interface to enter the
 router password is located at IP/config. Don't forget to set it up.
+
+## Libraries
+This project was built with
+* [Flask](https://github.com/pallets/flask)
+* [Selenium](https://github.com/baijum/selenium-python)
+* [pyvirtualdisplay](https://github.com/ponty/pyvirtualdisplay)
+* [Material Design Lite](https://github.com/google/material-design-lite)
