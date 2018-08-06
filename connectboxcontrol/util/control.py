@@ -17,12 +17,9 @@ def control(password, action=0):
     print("Preparing display")
     display = Display(visible=0, size=(800, 600))
     display.start()
-    # Set up capabilities to make it run with Firefox ESR
-    caps = webdriver.DesiredCapabilities().FIREFOX
-    caps["marionette"] = False
     # Instantiate browser and visit login page
     print("Starting browser")
-    browser = webdriver.Firefox(capabilities=caps)
+    browser = webdriver.Firefox()
     browser.get('http://192.168.0.1/common_page/login.html')
     time.sleep(5)
 
@@ -66,7 +63,7 @@ def control(password, action=0):
     # Close browser instance
     print("Terminating browser")
     browser.quit()
-    
+
     # Stop virtual display
     print("Stopping display")
     display.popen.terminate()
