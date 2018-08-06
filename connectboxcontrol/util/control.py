@@ -1,5 +1,8 @@
 import argparse
 from selenium import webdriver
+import selenium.webdriver.support.ui as ui
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display
 import time
 
@@ -33,8 +36,9 @@ def control(password, action=0):
 
     # Find the WiFi settings and load the page
     print("Opening WiFi settings")
-    advancedSettings = browser.find_element_by_id('c_mu05')
-    advancedSettings.click()
+    wait = ui.WebDriverWait(browser, 10)
+    adv_settings = wait.until(EC.element_to_be_clickable((By.ID, 'c_mu05')))
+    adv_settings.click()
     wifiSettings = browser.find_element_by_id('c_mu06')
     wifiSettings.click()
     wifiPage = browser.find_element_by_id('c_mu07')
