@@ -4,7 +4,7 @@ import selenium.webdriver.support.ui as ui
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display
-import time
+
 
 def control(password, action=0):
     """Visit the router's configuration page and turn WiFi on or off.
@@ -23,46 +23,41 @@ def control(password, action=0):
     # Instantiate browser and visit login page
     print("Starting browser")
     browser = webdriver.Firefox()
+    wait = ui.WebDriverWait(browser, 10)
     browser.get('http://192.168.0.1/common_page/login.html')
-    time.sleep(5)
 
     # Fill out login form and submit
     print("Logging in")
-    loginPassword = browser.find_element_by_id('loginPassword')
-    loginPassword.send_keys(password)
-    continueButton = browser.find_element_by_id('c_42')
-    continueButton.click()
-    time.sleep(5)
+    login_pw = wait.until(EC.element_to_be_clickable((By.ID, 'loginPassword')))
+    login_pw.send_keys(password)
+    continue_button = wait.until(EC.element_to_be_clickable((By.ID, 'c_42')))
+    continue_button.click()
 
     # Find the WiFi settings and load the page
     print("Opening WiFi settings")
-    wait = ui.WebDriverWait(browser, 10)
     adv_settings = wait.until(EC.element_to_be_clickable((By.ID, 'c_mu05')))
     adv_settings.click()
-    wifiSettings = browser.find_element_by_id('c_mu06')
-    wifiSettings.click()
-    wifiPage = browser.find_element_by_id('c_mu07')
-    wifiPage.click()
-    time.sleep(5)
+    wifi_settings = wait.until(EC.element_to_be_clickable((By.ID, 'c_mu06')))
+    wifi_settings.click()
+    wifi_page = wait.until(EC.element_to_be_clickable((By.ID, 'c_mu07')))
+    wifi_page.click()
 
     # Select 2.4 GHz on/off checkbox and apply settings
     if action == 1:
         print("Turning WiFi on")
-        on24 = browser.find_element_by_id('iwlanRadio2G1')
-        on24.click()
+        on = wait.until(EC.element_to_be_clickable((By.ID, 'iwlanRadio2G1')))
+        on.click()
     elif action == 0:
         print("Turning WiFi off")
-        off24 = browser.find_element_by_id('iwlanRadio2G2')
-        off24.click()
-    applyButton = browser.find_element_by_id('c_02')
-    applyButton.click()
-    time.sleep(5)
+        off = wait.until(EC.element_to_be_clickable((By.ID, 'iwlanRadio2G2')))
+        off.click()
+    apply = wait.until(EC.element_to_be_clickable((By.ID, 'c_02')))
+    apply.click()
 
     # Logout
     print("Logging out")
-    logout = browser.find_element_by_id('c_mu30')
+    logout = wait.until(EC.element_to_be_clickable((By.ID, 'c_mu30')))
     logout.click()
-    time.sleep(5)
 
     # Close browser instance
     print("Terminating browser")
@@ -71,6 +66,7 @@ def control(password, action=0):
     # Stop virtual display
     print("Stopping display")
     display.popen.terminate()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Turn WiFi on/off.")
