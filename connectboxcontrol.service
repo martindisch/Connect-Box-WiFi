@@ -6,7 +6,7 @@ After=network.target
 User=pi
 Group=www-data
 WorkingDirectory=/home/pi/Connect-Box-WiFi
-Environment="PATH=/home/pi/Connect-Box-WiFi/venv/bin:/usr/bin"
+Environment="PATH=/home/pi/Connect-Box-WiFi/venv/bin:/usr/bin:/usr/local/bin"
 ExecStart=/home/pi/Connect-Box-WiFi/venv/bin/gunicorn --workers 3 --bind unix:connectboxcontrol.sock -m 007 wsgi:app
 
 [Install]
