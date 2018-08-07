@@ -16,13 +16,13 @@ sudo apt-get install firefox-esr
 Selenium with Firefox needs the geckodriver, so you'll have to install that
 too. This is a bit tricky, because strange things can happen when the Firefox
 and geckodriver versions don't match up. Selenium with Firefox 52 and
-geckodriver 16.1 has been working, so this is the one to get. If you use a
+geckodriver 0.18.0 has been working, so this is the one to get. If you use a
 different version of Firefox, you may have to test multiple releases of
 geckodriver.
 ```
-wget https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-arm7hf.tar.gz
-tar -xvzf geckodriver-v0.16.1-arm7hf.tar.gz
-rm geckodriver-v0.16.1-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-arm7hf.tar.gz
+tar -xvzf geckodriver-v0.18.0-arm7hf.tar.gz
+rm geckodriver-v0.18.0-arm7hf.tar.gz
 chmod +x geckodriver
 sudo mv geckodriver /usr/local/bin/
 ```
