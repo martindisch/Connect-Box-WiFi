@@ -4,6 +4,7 @@ import selenium.webdriver.support.ui as ui
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display
+import time
 
 
 def control(password, action=0):
@@ -23,7 +24,7 @@ def control(password, action=0):
     # Instantiate browser and visit login page
     print("Starting browser")
     browser = webdriver.Firefox()
-    wait = ui.WebDriverWait(browser, 10)
+    wait = ui.WebDriverWait(browser, 60)
     browser.get('http://192.168.0.1/common_page/login.html')
 
     # Fill out login form and submit
@@ -41,6 +42,8 @@ def control(password, action=0):
     wifi_settings.click()
     wifi_page = wait.until(EC.element_to_be_clickable((By.ID, 'c_mu07')))
     wifi_page.click()
+    # Give the page time to load completely (checkbox won't work otherwise)
+    time.sleep(5)
 
     # Select 2.4 GHz on/off checkbox and apply settings
     if action == 1:
@@ -51,13 +54,19 @@ def control(password, action=0):
         print("Turning WiFi off")
         off = wait.until(EC.element_to_be_clickable((By.ID, 'iwlanRadio2G2')))
         off.click()
+
+    # Apply settings
     apply = wait.until(EC.element_to_be_clickable((By.ID, 'c_02')))
     apply.click()
+    # Wait until settings are applied (checkboxes clickable again)
+    wait.until(EC.element_to_be_clickable((By.ID, 'iwlanRadio2G1')))
 
     # Logout
     print("Logging out")
     logout = wait.until(EC.element_to_be_clickable((By.ID, 'c_mu30')))
     logout.click()
+    # Wait until logout process complete (password input clickable)
+    wait.until(EC.element_to_be_clickable((By.ID, 'loginPassword')))
 
     # Close browser instance
     print("Terminating browser")
