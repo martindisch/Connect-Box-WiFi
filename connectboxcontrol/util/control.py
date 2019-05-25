@@ -35,7 +35,7 @@ def control(password, action=0):
     login_pw = wait.until(EC.element_to_be_clickable((By.ID, 'loginPassword')))
     time.sleep(timeout)
     login_pw.send_keys(password)
-    continue_button = wait.until(EC.element_to_be_clickable((By.ID, 'c_42')))
+    continue_button = wait.until(EC.element_to_be_clickable((By.ID, 'c_36')))
     time.sleep(timeout)
     continue_button.click()
 
