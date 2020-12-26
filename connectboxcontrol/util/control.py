@@ -1,5 +1,10 @@
 import argparse
 import secrets
+import hashlib
+
+
+PBKDF2_ITERATIONS = 1000
+PBKDF2_KEYSIZE_BYTES = 16
 
 
 def generate_salt_iv():
@@ -27,7 +32,15 @@ def control(password, action=0):
     """
     # For encrypting our data, we first need a salt & IV
     salt, iv = generate_salt_iv()
-    print(salt, iv)
+    # And a derived key too
+    dk = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode(),
+        bytes.fromhex(salt),
+        PBKDF2_ITERATIONS,
+        PBKDF2_KEYSIZE_BYTES)
+    key = dk.hex()
+    print(key)
 
 
 if __name__ == "__main__":
