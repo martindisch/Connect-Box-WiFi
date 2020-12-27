@@ -155,7 +155,7 @@ def control(password, action=0):
     print("Logging in")
     php_sessid, csrf_nonce = login(password, salt, iv, key)
 
-    print(f"Turning WiFi {'off' if action == 0 else 'on'}")
+    print("Turning WiFi " + ("off" if action == 0 else "on"))
     switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action)
 
 

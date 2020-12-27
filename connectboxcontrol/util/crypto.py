@@ -68,4 +68,4 @@ def ccm_encrypt(key, iv, plain_text, authenticated_data):
     cipher = AES.new(key, AES.MODE_CCM, nonce=iv, mac_len=CCM_TAGLENGTH_BYTES)
     cipher.update(authenticated_data.encode())
     ciphertext, tag = cipher.encrypt_and_digest(plain_text.encode())
-    return f"{ciphertext.hex()}{tag.hex()}"
+    return ciphertext.hex() + tag.hex()
