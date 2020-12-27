@@ -1,4 +1,5 @@
 import argparse
+import json
 from connectboxcontrol.util import crypto
 
 
@@ -17,6 +18,30 @@ def control(password, action=0):
     salt, iv = crypto.generate_salt_iv()
     # And a derived key too
     key = crypto.derive_key(password, salt)
+
+    # Then we need to prepare our package for logging in
+    config_data = {
+        'csrfNonce': "undefined",
+        'newPassword': password,
+        'oldPassword': password,
+        'ChangePassword': "false",
+        'authData': "encryptData",
+        'salt': salt.hex(),
+        'iv': iv.hex()
+    }
+    # Encrypt it
+    blob = crypto.ccm_encrypt(
+        key,
+        iv,
+        json.dumps(config_data),
+        config_data['authData'])
+    # And put it into the structure we're going to send
+    encrypted_config_data = {
+        'encryptedBlob': blob,
+        'salt': salt.hex(),
+        'iv': iv.hex(),
+        'authData': config_data['authData'],
+    }
 
 
 if __name__ == "__main__":
