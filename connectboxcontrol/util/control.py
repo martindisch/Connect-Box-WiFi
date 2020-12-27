@@ -1,5 +1,7 @@
 import argparse
 import json
+import requests
+import sys
 from connectboxcontrol.util import crypto
 
 
@@ -42,6 +44,21 @@ def control(password, action=0):
         'iv': iv.hex(),
         'authData': config_data['authData'],
     }
+    body_to_send = {
+        'configInfo': json.dumps(encrypted_config_data)
+    }
+
+    # Now we can make the request to initiate the session
+    r = requests.post(
+        "http://192.168.0.1/php/ajaxSet_Password.php",
+        data=body_to_send)
+    # Fetch useful parts from the response
+    php_sessid = r.cookies['PHPSESSID']
+    body = r.json()
+    p_status = body['p_status']
+    if p_status == "MisMatch":
+        sys.exit("Login mismatch, maybe the password is incorrect?")
+    csrf_nonce = body['nonce']
 
 
 if __name__ == "__main__":
