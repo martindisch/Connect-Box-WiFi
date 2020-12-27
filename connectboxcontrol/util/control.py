@@ -63,6 +63,8 @@ def login(password, salt, iv, key):
     p_status = body['p_status']
     if p_status == "MisMatch":
         raise Exception("Login mismatch, maybe the password is incorrect?")
+    if p_status == "Active_session":
+        raise Exception("There's already an active session")
     csrf_nonce = body['nonce']
 
     return php_sessid, csrf_nonce
