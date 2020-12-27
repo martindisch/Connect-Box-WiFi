@@ -1,6 +1,6 @@
-import secrets
 import hashlib
 from Crypto.Cipher import AES
+import Crypto.Random as random
 
 
 PBKDF2_ITERATIONS = 1000
@@ -17,7 +17,7 @@ def generate_salt_iv():
         The salt and IV
 
     """
-    return secrets.token_bytes(8), secrets.token_bytes(8)
+    return random.get_random_bytes(8), random.get_random_bytes(8)
 
 
 def derive_key(password, salt):
