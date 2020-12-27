@@ -69,3 +69,32 @@ def ccm_encrypt(key, iv, plain_text, authenticated_data):
     cipher.update(authenticated_data.encode())
     ciphertext, tag = cipher.encrypt_and_digest(plain_text.encode())
     return f"{ciphertext.hex()}{tag.hex()}"
+
+
+def ccm_decrypt(key, iv, blob, authenticated_data):
+    """Decrypt & authenticate data.
+
+    Parameters
+    ----------
+    key : bytes
+        The key
+    iv : bytes
+        The IV
+    blob : str
+        The ciphertext & tag concatenated in hex representation
+    authenticated_data : str
+        The data to authenticate
+
+    Returns
+    -------
+    str
+        The plaintext
+
+    """
+    cipher = AES.new(key, AES.MODE_CCM, nonce=iv, mac_len=CCM_TAGLENGTH_BYTES)
+    cipher.update(authenticated_data.encode())
+    blob_bytes = bytes.fromhex(blob)
+    ciphertext = blob_bytes[:-CCM_TAGLENGTH_BYTES]
+    tag = blob_bytes[-CCM_TAGLENGTH_BYTES:]
+    plaintext = cipher.decrypt_and_verify(ciphertext, tag)
+    return plaintext.decode()
