@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="connectboxcontrol",
-    version="1.0.0",
+    version="1.1.0",
     description="Turn the WiFi of your Connect Box router on/off",
     packages=['connectboxcontrol'],
     include_package_data=True,
