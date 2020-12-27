@@ -3,6 +3,7 @@ import json
 import requests
 import sys
 from connectboxcontrol.util import crypto
+from connectboxcontrol.util.crypto import hex
 
 
 def login(password, salt, iv, key):
@@ -32,8 +33,8 @@ def login(password, salt, iv, key):
         'oldPassword': password,
         'ChangePassword': "false",
         'authData': "encryptData",
-        'salt': salt.hex(),
-        'iv': iv.hex()
+        'salt': hex(salt),
+        'iv': hex(iv)
     }
     # Encrypt it
     config_blob = crypto.ccm_encrypt(
@@ -44,8 +45,8 @@ def login(password, salt, iv, key):
     # And put it into the structure we're going to send
     encrypted_config_data = {
         'encryptedBlob': config_blob,
-        'salt': salt.hex(),
-        'iv': iv.hex(),
+        'salt': hex(salt),
+        'iv': hex(iv),
         'authData': config_data['authData'],
     }
     login_body_to_send = {
@@ -100,8 +101,8 @@ def switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action):
         'js_5g_channelBW': "80MHz",
         'csrf_nonce': csrf_nonce,
         'authData': "encryptData",
-        'salt': salt.hex(),
-        'iv': iv.hex()
+        'salt': hex(salt),
+        'iv': hex(iv)
     }
     # Encrypt it
     wifi_blob = crypto.ccm_encrypt(
@@ -112,8 +113,8 @@ def switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action):
     # And put it into the structure we're going to send
     encrypted_wifi_data = {
         'encryptedBlob': wifi_blob,
-        'salt': salt.hex(),
-        'iv': iv.hex(),
+        'salt': hex(salt),
+        'iv': hex(iv),
         'authData': wifi_data['authData'],
     }
     wifi_body_to_send = {

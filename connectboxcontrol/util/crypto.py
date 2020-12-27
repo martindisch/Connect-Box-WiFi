@@ -1,4 +1,5 @@
 import hashlib
+import codecs
 from Crypto.Cipher import AES
 import Crypto.Random as random
 
@@ -6,6 +7,23 @@ import Crypto.Random as random
 PBKDF2_ITERATIONS = 1000
 PBKDF2_KEYSIZE_BYTES = 16
 CCM_TAGLENGTH_BYTES = 16
+
+
+def hex(b):
+    """Convert the given bytes to hexadecimal string representation.
+
+    Parameters
+    ----------
+    b : bytes
+        The byte string to convert
+
+    Returns
+    -------
+    str
+        Hexadecimal string
+
+    """
+    return codecs.encode(b, "hex").decode("ascii")
 
 
 def generate_salt_iv():
@@ -68,4 +86,4 @@ def ccm_encrypt(key, iv, plain_text, authenticated_data):
     cipher = AES.new(key, AES.MODE_CCM, nonce=iv, mac_len=CCM_TAGLENGTH_BYTES)
     cipher.update(authenticated_data.encode())
     ciphertext, tag = cipher.encrypt_and_digest(plain_text.encode())
-    return ciphertext.hex() + tag.hex()
+    return hex(ciphertext) + hex(tag)

@@ -1,4 +1,5 @@
 from connectboxcontrol.util import crypto
+from connectboxcontrol.util.crypto import hex
 import unittest
 
 
@@ -8,7 +9,7 @@ class TestCrypto(unittest.TestCase):
         password = "password"
         salt = "2edf72e93aba5da5"
         key = crypto.derive_key(password, bytes.fromhex(salt))
-        self.assertEqual(key.hex(), "7eb126d09f6371c51099baedee1b02d0")
+        self.assertEqual(hex(key), "7eb126d09f6371c51099baedee1b02d0")
 
     def test_ccm_encrypt(self):
         key = bytes.fromhex("7eb126d09f6371c51099baedee1b02d0")
