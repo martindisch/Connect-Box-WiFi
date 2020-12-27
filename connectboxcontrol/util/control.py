@@ -67,6 +67,39 @@ def login(password, salt, iv, key):
     return php_sessid, csrf_nonce
 
 
+def get_wifi_data(salt, iv, key, php_sessid, csrf_nonce):
+    # Prepare the package for the request
+    request_body = {
+        'wifiData[sonOperationalStatus]': "",
+        'wifiData[authData]': "getWifiData",
+        'wifiData[salt]': salt.hex(),
+        'wifiData[iv]': iv.hex(),
+        'opType': "READ"
+    }
+    # Make the request to fetch the current settings
+    r = requests.post(
+        "http://192.168.0.1/php/wifi_data.php",
+        data=request_body,
+        headers={
+            'Origin': "http://192.168.0.1",
+            'CSRF_NONCE': csrf_nonce
+        },
+        cookies={
+            'PHPSESSID': php_sessid
+        })
+    # Obtain what we're interested in
+    body = r.json()
+
+    # Decrypt the current configuration
+    wifi_data = crypto.ccm_decrypt(
+        key,
+        iv,
+        body['encryptedBlob'],
+        body['authData'])
+
+    return wifi_data
+
+
 def switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action):
     """Enable or disable the WiFi.
 
@@ -154,6 +187,8 @@ def control(password, action=0):
 
     print("Logging in")
     php_sessid, csrf_nonce = login(password, salt, iv, key)
+
+    get_wifi_data(salt, iv, key, php_sessid, csrf_nonce)
 
     print(f"Turning WiFi {'off' if action == 0 else 'on'}")
     switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action)
