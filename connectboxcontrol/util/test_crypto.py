@@ -16,7 +16,9 @@ class TestCrypto(unittest.TestCase):
         plain_text = "The quick brown fox jumps over the lazy dog"
         authenticated_data = "encryptData"
         blob = crypto.ccm_encrypt(key, iv, plain_text, authenticated_data)
-        self.assertEqual(blob, "67f629812e12cc616af57f6867fe0f3500c0790270139c75f56553718fd48463316737f55e077a720701533614d9666dcb6e970fcccc368e6e9446")
+        self.assertEqual(
+            blob,
+            "67f629812e12cc616af57f6867fe0f3500c0790270139c75f56553718fd48463316737f55e077a720701533614d9666dcb6e970fcccc368e6e9446")
 
 
 if __name__ == '__main__':

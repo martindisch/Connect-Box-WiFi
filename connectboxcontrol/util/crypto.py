@@ -5,7 +5,7 @@ from Crypto.Cipher import AES
 
 PBKDF2_ITERATIONS = 1000
 PBKDF2_KEYSIZE_BYTES = 16
-CCM_TAGLENGTH_BYTES = 16;
+CCM_TAGLENGTH_BYTES = 16
 
 
 def generate_salt_iv():
