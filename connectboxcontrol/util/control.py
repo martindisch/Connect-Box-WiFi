@@ -5,23 +5,27 @@ import sys
 from connectboxcontrol.util import crypto
 
 
-def control(password, action=0):
-    """Visit the router's configuration page and turn WiFi on or off.
+def login(password, salt, iv, key):
+    """Start a new session.
 
     Parameters
     ----------
     password : str
-        The password to login with
-    action : int, optional
-        Whether to turn WiFi on (1) or off (0)
+        The password
+    salt : bytes
+        The salt
+    iv : bytes
+        The IV
+    key : bytes
+        The key
+
+    Returns
+    -------
+    tuple of str
+        The php_sessid, csrf_nonce pair
 
     """
-    # For encrypting our data, we first need a salt & IV
-    salt, iv = crypto.generate_salt_iv()
-    # And a derived key too
-    key = crypto.derive_key(password, salt)
-
-    # Then we need to prepare our package for logging in
+    # Prepare our package for logging in
     config_data = {
         'csrfNonce': "undefined",
         'newPassword': password,
@@ -49,7 +53,6 @@ def control(password, action=0):
     }
 
     # Now we can make the request to initiate the session
-    print("Logging in")
     r = requests.post(
         "http://192.168.0.1/php/ajaxSet_Password.php",
         data=login_body_to_send)
@@ -58,10 +61,32 @@ def control(password, action=0):
     body = r.json()
     p_status = body['p_status']
     if p_status == "MisMatch":
-        sys.exit("Login mismatch, maybe the password is incorrect?")
+        raise Exception("Login mismatch, maybe the password is incorrect?")
     csrf_nonce = body['nonce']
 
-    # Now let's prepare the package for changing the WiFi state
+    return php_sessid, csrf_nonce
+
+
+def switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action):
+    """Enable or disable the WiFi.
+
+    Parameters
+    ----------
+    salt : bytes
+        The salt
+    iv : bytes
+        The IV
+    key : bytes
+        The key
+    php_sessid : str
+        The PHP session ID
+    csrf_nonce : str
+        The CSRF token for the session
+    action : int
+        Whether to turn WiFi on (1) or off (0)
+
+    """
+    # Prepare the package for changing the WiFi state
     wifi_data = {
         'js_24g_stat': "false" if action == 0 else "true",
         'js_24g_channel_mode': "false",
@@ -97,7 +122,6 @@ def control(password, action=0):
     }
 
     # Make the request to change the settings
-    print(f"Turning WiFi {'off' if action == 0 else 'on'}")
     r = requests.post(
         "http://192.168.0.1/php/wifi_data.php",
         data=wifi_body_to_send,
@@ -109,7 +133,30 @@ def control(password, action=0):
             'PHPSESSID': php_sessid
         })
     if r.text != "\nUpdated successfully":
-        sys.exit("Failed to update successfully")
+        raise Exception("Failed to update successfully")
+
+
+def control(password, action=0):
+    """Turn WiFi on or off.
+
+    Parameters
+    ----------
+    password : str
+        The password to login with
+    action : int, optional
+        Whether to turn WiFi on (1) or off (0)
+
+    """
+    # For encrypting our data, we first need a salt & IV
+    salt, iv = crypto.generate_salt_iv()
+    # And a derived key too
+    key = crypto.derive_key(password, salt)
+
+    print("Logging in")
+    php_sessid, csrf_nonce = login(password, salt, iv, key)
+
+    print(f"Turning WiFi {'off' if action == 0 else 'on'}")
+    switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action)
 
 
 if __name__ == "__main__":
