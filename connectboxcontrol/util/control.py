@@ -32,26 +32,26 @@ def control(password, action=0):
         'iv': iv.hex()
     }
     # Encrypt it
-    blob = crypto.ccm_encrypt(
+    config_blob = crypto.ccm_encrypt(
         key,
         iv,
         json.dumps(config_data),
         config_data['authData'])
     # And put it into the structure we're going to send
     encrypted_config_data = {
-        'encryptedBlob': blob,
+        'encryptedBlob': config_blob,
         'salt': salt.hex(),
         'iv': iv.hex(),
         'authData': config_data['authData'],
     }
-    body_to_send = {
+    login_body_to_send = {
         'configInfo': json.dumps(encrypted_config_data)
     }
 
     # Now we can make the request to initiate the session
     r = requests.post(
         "http://192.168.0.1/php/ajaxSet_Password.php",
-        data=body_to_send)
+        data=login_body_to_send)
     # Fetch useful parts from the response
     php_sessid = r.cookies['PHPSESSID']
     body = r.json()
@@ -59,6 +59,55 @@ def control(password, action=0):
     if p_status == "MisMatch":
         sys.exit("Login mismatch, maybe the password is incorrect?")
     csrf_nonce = body['nonce']
+
+    # Now let's prepare the package for changing the WiFi state
+    wifi_data = {
+        'js_24g_stat': "false" if action == 0 else "true",
+        'js_24g_channel_mode': "false",
+        'js_24g_channelBW': "20MHz",
+        'js_24g_mode': "g,n",
+        'js_24g_channel': 11,
+        'js_5g_stat': "false",
+        'js_5g_mode': "a,n,ac",
+        'js_5g_channel_mode': "false",
+        'js_5g_channel': 44,
+        'js_5g_channelBW': "80MHz",
+        'csrf_nonce': csrf_nonce,
+        'authData': "encryptData",
+        'salt': salt.hex(),
+        'iv': iv.hex()
+    }
+    # Encrypt it
+    wifi_blob = crypto.ccm_encrypt(
+        key,
+        iv,
+        json.dumps(wifi_data),
+        wifi_data['authData'])
+    # And put it into the structure we're going to send
+    encrypted_wifi_data = {
+        'encryptedBlob': wifi_blob,
+        'salt': salt.hex(),
+        'iv': iv.hex(),
+        'authData': wifi_data['authData'],
+    }
+    wifi_body_to_send = {
+        'wifiData': json.dumps(encrypted_wifi_data),
+        'opType': "WRITE"
+    }
+
+    # Make the request to change the settings
+    r = requests.post(
+        "http://192.168.0.1/php/wifi_data.php",
+        data=wifi_body_to_send,
+        headers={
+            'Origin': "http://192.168.0.1",
+            'CSRF_NONCE': csrf_nonce
+        },
+        cookies={
+            'PHPSESSID': php_sessid
+        })
+    if r.text != "\nUpdated successfully":
+        sys.exit("Failed to update successfully")
 
 
 if __name__ == "__main__":
