@@ -49,6 +49,7 @@ def control(password, action=0):
     }
 
     # Now we can make the request to initiate the session
+    print("Logging in")
     r = requests.post(
         "http://192.168.0.1/php/ajaxSet_Password.php",
         data=login_body_to_send)
@@ -96,6 +97,7 @@ def control(password, action=0):
     }
 
     # Make the request to change the settings
+    print(f"Turning WiFi {'off' if action == 0 else 'on'}")
     r = requests.post(
         "http://192.168.0.1/php/wifi_data.php",
         data=wifi_body_to_send,
