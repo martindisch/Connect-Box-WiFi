@@ -94,7 +94,7 @@ def switch_wifi(salt, iv, key, php_sessid, csrf_nonce, action):
         'js_24g_stat': "false" if action == 0 else "true",
         'js_24g_channel_mode': "false",
         'js_24g_channelBW': "20MHz",
-        'js_24g_mode': "g,n",
+        'js_24g_mode': "b,g,n",
         'js_24g_channel': 11,
         'js_5g_stat': "false",
         'js_5g_mode': "a,n,ac",
